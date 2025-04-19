@@ -1,102 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Haha and Pad</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Haha and Pad – Login</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Crimson+Text&display=swap');
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      font-family: 'Comic Sans MS', cursive, sans-serif;
-      background-color: #fff0f8;
-      color: #333;
-      text-align: center;
+      padding: 0;
+      font-family: 'Crimson Text', serif;
+      background: url("butterfly.png") no-repeat center center fixed;
+      background-size: cover;
+      color: #f2e6ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      backdrop-filter: brightness(0.9);
     }
-    header {
-      background-color: #caa6f8;
-      padding: 20px;
-    }
+
     h1 {
-      margin: 0;
-      font-size: 2.5em;
+      font-size: 2rem;
+      text-align: center;
+      max-width: 90%;
     }
-    .butterfly {
-      width: 60px;
-      height: auto;
+
+    p.hint {
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      opacity: 0.7;
     }
-    nav a {
-      margin: 10px;
-      padding: 10px 15px;
-      background-color: #e6ccff;
-      color: #5a007a;
-      text-decoration: none;
-      border-radius: 10px;
-      display: inline-block;
+
+    .login-box {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: row;
+      gap: 0.5rem;
     }
-    .section {
-      display: none;
-      padding: 20px;
+
+    input[type="password"] {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      min-width: 200px;
     }
-    .active {
-      display: block;
+
+    button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: rgba(255, 255, 255, 0.25);
     }
   </style>
 </head>
 <body>
-  <header>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Purple_butterfly_icon.svg" alt="Purple Butterfly" class="butterfly">
-    <h1>Haha and Pad</h1>
-    <p>Please enter password to continue:</p>
-    <input type="password" id="password" placeholder="Password">
+  <h1>Since when did we decide<br>to not take things slow?</h1>
+  <p class="hint">(hint: dd.mm.yyyy)</p>
+  <div class="login-box">
+    <input type="password" id="password" placeholder="Password" />
     <button onclick="checkPassword()">Enter</button>
-  </header>
-
-  <nav id="navigation" style="display: none;">
-    <a href="#" onclick="showSection('intro')">Welcome</a>
-    <a href="#" onclick="showSection('myday')">My Day</a>
-    <a href="#" onclick="showSection('pictures')">Pictures</a>
-    <a href="#" onclick="showSection('audio')">Audio</a>
-  </nav>
-
-  <section id="intro" class="section">
-    <h2>Welcome!</h2>
-    <p>This is your shared place. A home for thoughts, smiles, and purple butterflies.</p>
-  </section>
-
-  <section id="myday" class="section">
-    <h2>My Day</h2>
-    <p>Write or paste your daily thoughts here.</p>
-    <!-- Future enhancement: editable or form section -->
-  </section>
-
-  <section id="pictures" class="section">
-    <h2>Pictures</h2>
-    <p>Upload and view your favorite moments.</p>
-    <!-- Future enhancement: image upload section -->
-  </section>
-
-  <section id="audio" class="section">
-    <h2>Audio</h2>
-    <p>Add voice notes or songs here.</p>
-    <!-- Future enhancement: audio upload section -->
-  </section>
+  </div>
 
   <script>
     function checkPassword() {
-      const input = document.getElementById('password').value;
-      if (input === '30.1.2025') {
-        document.querySelector('header').style.display = 'none';
-        document.getElementById('navigation').style.display = 'block';
-        showSection('intro');
+      const input = document.getElementById("password").value;
+      if (input === "30.01.2025" || input === "30.1.2025") {
+        window.location.href = "home.html"; // sem můžeš dát jméno další stránky
       } else {
-        alert('Wrong password! Try again.');
+        alert("Wrong password, try again.");
       }
-    }
-
-    function showSection(id) {
-      const sections = document.querySelectorAll('.section');
-      sections.forEach(section => section.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
     }
   </script>
 </body>
