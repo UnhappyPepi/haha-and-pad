@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Day – Firebase (Safe)</title>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <script src="firebase-config.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Crimson+Text&display=swap');
+    body {
+      font-family: 'Crimson Text', serif;
+      background: url('myday_background.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #2e1d1d;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .nav {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .nav button {
+      padding: 0.5rem 1.2rem;
+      font-size: 1rem;
+      border: 1px solid #caa6f8;
+      background-color: transparent;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .nav button.active {
+      background-color: #caa6f8;
+      color: white;
+    }
+    .entry {
+      display: none;
+      flex-direction: column;
+      width: 100%;
+      max-width: 600px;
+    }
+    .entry.active {
+      display: flex;
+    }
+    input, textarea {
+      font-family: 'Crimson Text', serif;
+      font-size: 1rem;
+      padding: 0.6rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      width: 100%;
+    }
+    button.save-btn {
+      padding: 0.6rem;
+      background-color: #caa6f8;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 1rem;
+    }
+    .logs {
+      width: 100%;
+    }
+    .log-entry {
+      background: rgba(255,255,255,0.6);
+      padding: 0.5rem;
+      border-radius: 6px;
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .log-entry span {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .log-entry button {
+      margin-left: 0.5rem;
+      background: none;
+      border: none;
+      color: #6b4c9a;
+      cursor: pointer;
+    }
+    a.back {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: #6b4c9a;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>My Day</h1>
+  <div class="nav">
+    <button onclick="switchUser('sofie')" id="btn-sofie">Sofie's Day</button>
+    <button onclick="switchUser('haha')" id="btn-haha">Haha's Day</button>
+  </div>
+
+  <div id="entry-sofie" class="entry">
+    <input type="text" id="date-sofie" placeholder="Date (e.g. 20.4.)" />
+    <textarea id="text-sofie" placeholder="Write something..."></textarea>
+    <button class="save-btn" onclick="saveEntry('sofie')">Save</button>
+    <div class="logs" id="logs-sofie"></div>
+  </div>
+
+  <div id="entry-haha" class="entry">
+    <input type="text" id="date-haha" placeholder="Date (e.g. 20.4.)" />
+    <textarea id="text-haha" placeholder="Write something..."></textarea>
+    <button class="save-btn" onclick="saveEntry('haha')">Save</button>
+    <div class="logs" id="logs-haha"></div>
+  </div>
+
+  <a href="home.html" class="back">← Back to Home</a>
+
+  <script>
+    const db = firebase.database();
+
+    let currentUser = "sofie";
+
+    function switchUser(user) {
+      currentUser = user;
+      document.querySelectorAll('.entry').forEach(e => e.classList.remove('active'));
+      document.querySelector(`#entry-${user}`).classList.add('active');
+      document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+      document.getElementById(`btn-${user}`).classList.add('active');
+      loadLogs(user);
+    }
+
+    function saveEntry(user) {
+      const date = document.getElementById(`date-${user}`).value;
+      const text = document.getElementById(`text-${user}`).value;
+      if (!date || !text) return alert("Please fill both fields.");
+      db.ref(`${user}/${date}`).set(text);
+      loadLogs(user);
+    }
+
+    function loadLogs(user) {
+      const logsContainer = document.getElementById(`logs-${user}`);
+      logsContainer.innerHTML = '';
+      db.ref(user).once('value', snapshot => {
+        const data = snapshot.val();
+        if (data) {
+          Object.keys(data).forEach(date => {
+            const div = document.createElement('div');
+            div.className = 'log-entry';
+            div.innerHTML = `<span onclick="loadEntry('${user}', '${date}')">${date}</span>
+              <div>
+                <button onclick="editEntry('${user}', '${date}')">edit</button>
+                <button onclick="deleteEntry('${user}', '${date}')">delete</button>
+              </div>`;
+            logsContainer.appendChild(div);
+          });
+        }
+      });
+    }
+
+    function loadEntry(user, date) {
+      db.ref(`${user}/${date}`).once('value', snapshot => {
+        document.getElementById(`date-${user}`).value = date;
+        document.getElementById(`text-${user}`).value = snapshot.val();
+      });
+    }
+
+    function editEntry(user, date) {
+      loadEntry(user, date);
+    }
+
+    function deleteEntry(user, date) {
+      if (confirm(`Delete entry for ${date}?`)) {
+        db.ref(`${user}/${date}`).remove();
+        loadLogs(user);
+      }
+    }
+
+    switchUser('sofie');
+  </script>
+</body>
+</html>
