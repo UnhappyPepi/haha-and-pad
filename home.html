@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Haha and Pad – Home</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Crimson+Text&family=Dancing+Script&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Crimson Text', serif;
+      background: url("background.png") no-repeat center center fixed;
+      background-size: cover;
+      color: #f2e6ff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 100vh;
+      padding: 4vh 2vw;
+      text-align: center;
+      backdrop-filter: brightness(0.9);
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      max-width: 90%;
+      margin-bottom: 0.5rem;
+    }
+
+    p.subtext {
+      font-size: 1rem;
+      opacity: 0.8;
+      margin-bottom: 2rem;
+    }
+
+    .nav-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    a.button {
+      padding: 0.7rem 2rem;
+      border: 1px solid #caa6f8;
+      border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.05);
+      color: #f2e6ff;
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+    }
+
+    a.button:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      transform: scale(1.03);
+    }
+
+    footer {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1rem;
+      opacity: 0.7;
+      margin-top: 3rem;
+      padding-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>You become responsible, forever, for what you have tamed.</h1>
+    <p class="subtext">A place to leave our days, our sounds, our echoes.</p>
+
+    <div class="nav-buttons">
+      <a href="myday.html" class="button">My Day</a>
+      <a href="pictures.html" class="button">Pictures</a>
+      <a href="audio.html" class="button">Audio</a>
+    </div>
+  </main>
+
+  <footer>
+    opened by one, written by two
+  </footer>
+</body>
+</html>
